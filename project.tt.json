@@ -1,0 +1,9 @@
+{
+  "miniprogramRoot": "./",
+  "projectname": "jobs-portal",
+  "appid": "testAppId",
+  "setting": {
+    "es6": false,
+    "minified": false
+  }
+}
