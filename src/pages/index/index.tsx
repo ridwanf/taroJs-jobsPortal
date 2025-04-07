@@ -1,6 +1,7 @@
-import { View, Text, Button } from '@tarojs/components';
+import { View, Text } from '@tarojs/components';
 import './index.scss';
 import Taro from '@tarojs/taro';
+import { JobItem } from '/src/components/organisms/job-item/job-item';
 
 export default function JobList() {
   const jobs = [
@@ -29,35 +30,21 @@ export default function JobList() {
 
   const onClickBtns = () => {
     Taro.navigateTo({
-      url: '/pages/job-detail/index',
+      url: '/pages/job-detail/job-detail',
     });
   };
 
   return (
-    <View className="bg-gray-100 min-h-screen p-4">
-      {/* Header */}
-      <View className="bg-white shadow-md p-4 flex justify-between items-center">
-        <Text className="text-xl font-bold text-gray-800">Job Listings</Text>
-        <Button className="bg-green-500 text-white px-4 py-2 rounded-md">Post a Job</Button>
-      </View>
-
+    <View className="bg-gray-100 min-h-screen">
       {/* Job List */}
-      <View className="mt-6 space-y-4">
+      <View className="p-4 space-y-4">
         {jobs.map((job) => (
-          <View key={job.id} className="bg-white shadow-md p-4 rounded-md">
-            <Text className="text-lg font-semibold text-gray-800">{job.title}</Text>
-            <Text className="text-gray-600 mt-2">{job.description}</Text>
-            <Text className="text-sm text-gray-500 mt-2">Location: {job.location}</Text>
-            <Text className="text-sm text-gray-500">Salary: {job.salary}</Text>
-            <Button onClick={onClickBtns} className="mt-4 bg-green-500 text-white px-4 py-2 rounded-md">
-              Apply Now
-            </Button>
-          </View>
+          <JobItem key={job.id} job={job} onClickBtns={onClickBtns} />
         ))}
       </View>
 
       {/* Footer */}
-      <View className="mt-12 bg-gray-800 text-white p-4 text-center">
+      <View className="mt-12 bg-blue-50 text-white p-4 text-center">
         <Text>© 2025 Upwork Clone. All rights reserved.</Text>
       </View>
     </View>

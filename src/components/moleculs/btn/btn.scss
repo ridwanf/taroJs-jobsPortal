@@ -1,0 +1,10 @@
+.button {
+  &.button-primary {
+    @apply bg-blue-50 text-white;
+  }
+  
+  &.button-secondary {
+    @apply bg-white text-gray-800;
+  }
+
+}
