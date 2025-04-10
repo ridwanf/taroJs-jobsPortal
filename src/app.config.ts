@@ -21,13 +21,13 @@ export default defineAppConfig({
         pagePath: "pages/index/index",
         text: "Jobs",
         iconPath: "assets/icons/job.png",
-        selectedIconPath: "assets/icons/job.png"
+        selectedIconPath: "assets/icons/job-active.png"
       },
       {
         pagePath: "pages/profile/profile",
         text: "Profile",
         iconPath: "assets/icons/user.png",
-        selectedIconPath: "assets/icons/user.png"
+        selectedIconPath: "assets/icons/user-active.png"
       }
     ]
   }

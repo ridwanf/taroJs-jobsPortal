@@ -6,6 +6,7 @@ export interface Job {
   salary: string;
   company?: string;
   requirements?: string[];
+  isApplied: boolean;
 }
 
 export interface Proposal {

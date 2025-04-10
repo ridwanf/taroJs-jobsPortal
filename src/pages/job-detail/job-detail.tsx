@@ -2,21 +2,12 @@ import { View, Text } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import Btn from '../../components/moleculs/btn/btn';
 import { Job } from '../../../types/types';
+import { useSelector } from 'react-redux';
+import { RootState } from '/src/reducers';
 
 export default function JobDetail() {
-  const job: Job = {
-    id: 1,
-    title: 'Frontend Developer',
-    description: 'We are looking for a skilled React developer to build a responsive web application. You will work closely with our design and backend teams to deliver high-quality features.',
-    requirements: [
-      'Proficiency in React and JavaScript.',
-      'Experience with Tailwind CSS or similar frameworks.',
-      'Familiarity with RESTful APIs and state management libraries like Redux.',
-    ],
-    location: 'Remote',
-    salary: '$3000 - $5000/month',
-    company: 'Tech Solutions Inc.',
-  };
+  const { credit } = useSelector((state: RootState) => state.user);
+  const job: Job = useSelector((state: RootState) => state.job.job!);
 
   const onClickBack = () => {
     Taro.navigateBack();
@@ -26,6 +17,28 @@ export default function JobDetail() {
     Taro.navigateTo({
       url: '/pages/proposal/proposal',
     });
+  };
+
+  const onClickTopUp = () => {
+    Taro.tradePay({
+      success: (res) => {
+        // Show success message
+        Taro.showToast({
+          title: JSON.stringify(res),
+          icon: 'success',
+        });
+        console.error(res);
+
+      },
+      fail: (err) => {
+        // Show error message
+        Taro.showToast({
+          title: JSON.stringify(err),
+          icon: 'none',
+        });
+        console.error(err);
+      }
+    })
   };
 
   return (
@@ -68,7 +81,17 @@ export default function JobDetail() {
             </View>
           </View>
 
-          <Btn onClick={onClickApply} title="Apply Now" type="primary" />
+          <View className="mb-4 flex flex-col">
+            <Text className="text-md font-semibold text-gray-800 mb-2">Credits</Text>
+            <Text className="text-gray-600">{credit} credits remaining</Text>
+
+          </View>
+
+          {credit <= 0 ? (
+            <Btn onClick={onClickTopUp} title="Top Up Credits" type="primary" />
+          ) : (
+            <Btn onClick={onClickApply} title="Apply Now" type="primary" block />
+          )}
         </View>
       </View>
     </View>

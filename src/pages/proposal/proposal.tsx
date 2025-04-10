@@ -3,19 +3,16 @@ import Taro from '@tarojs/taro';
 import { Job, Proposal } from '../../../types/types';
 import Btn from '../../components/moleculs/btn/btn';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { applyJob } from '/src/actions/user';
+import { updateJobStatus } from '/src/actions/job';
+import { RootState } from '/src/reducers';
 
 export default function ProposalPage() {
-  const job: Job = {
-    id: 1,
-    title: 'Frontend Developer',
-    company: 'Tech Solutions Inc.',
-    description: '',
-    location: '',
-    salary: '',
-  };
-
+  const dispatch = useDispatch();
+  const job: Job = useSelector((state: RootState) => state.job.job!);
   const [proposal, setProposal] = useState<Proposal>({
-    jobId: job.id,
+    jobId: job?.id || 0,
     content: '',
     status: 'draft'
   });
@@ -33,8 +30,9 @@ export default function ProposalPage() {
       return;
     }
 
-    // Handle proposal submission logic here
-    console.log('Proposal submitted!', proposal);
+    // Dispatch both actions: reduce credit and update job status
+    dispatch(applyJob());
+    dispatch(updateJobStatus(proposal.jobId));
 
     // Show success message
     Taro.showToast({
@@ -42,9 +40,11 @@ export default function ProposalPage() {
       icon: 'success',
     });
 
-    // Navigate back to job detail
+    // Navigate back to job list
     setTimeout(() => {
-      Taro.navigateBack();
+      Taro.reLaunch({
+        url: '/pages/index/index',
+      });
     }, 1500);
   };
 
