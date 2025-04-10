@@ -29,6 +29,28 @@ export default function Profile() {
     });
   };
 
+  const onClickTopUp = () => {
+    Taro.tradePay({
+      tradeNO: '12345678',
+      success: (res) => {
+        // Show success message
+        Taro.showToast({
+          title: JSON.stringify(res),
+          icon: 'success',
+        });
+        console.error(res);
+      },
+      fail: (err) => {
+        // Show error message
+        Taro.showToast({
+          title: JSON.stringify(err),
+          icon: 'none',
+        });
+        console.error(err);
+      }
+    })
+  };
+
   return (
     <View className="min-h-screen bg-gray-100 p-4">
       {/* Content */}
@@ -51,7 +73,15 @@ export default function Profile() {
                     {user.credits} credits remaining
                   </Text>
                 </View>
-              </View>
+                {
+                  user.credits <= 0 && (
+                    <Btn
+                      onClick={onClickTopUp}
+                      title="Top Up Credits"
+                      type="primary"
+                    />
+                  )
+                }              </View>
             </View>
           </View>
 

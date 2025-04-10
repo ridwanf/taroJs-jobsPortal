@@ -22,4 +22,5 @@ export interface User {
   cvUrl?: string;
   credits: number;
   avatar?: string;
+  email?: string;
 }

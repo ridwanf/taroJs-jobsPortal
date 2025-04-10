@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '/src/reducers';
 
 export default function JobDetail() {
-  const { credit } = useSelector((state: RootState) => state.user);
+  const credit = useSelector((state: RootState) => state.user.credit);
   const job: Job = useSelector((state: RootState) => state.job.job!);
 
   const onClickBack = () => {
@@ -21,6 +21,7 @@ export default function JobDetail() {
 
   const onClickTopUp = () => {
     Taro.tradePay({
+      tradeNO: '12345678',
       success: (res) => {
         // Show success message
         Taro.showToast({

@@ -3,6 +3,7 @@ import { defineConfig, type UserConfigExport } from "@tarojs/cli";
 import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
 import devConfig from "./dev";
 import prodConfig from "./prod";
+import path from "path";
 // const isH5 = process.env.TARO_ENV === "h5";
 // const isApp = process.env.TARO_ENV === "rn";
 // const WeappTailwindcssDisabled = isH5 || isApp;
@@ -19,9 +20,12 @@ export default defineConfig(async (merge, { command, mode }) => {
     sourceRoot: "src",
     outputRoot: "dist",
     plugins: [],
+    alias: {
+      "@": path.resolve(__dirname, "..", "src"),
+    },
     defineConstants: {},
     copy: {
-      patterns: [],
+      patterns: [{ from: "src/assets/", to: "dist/assets/" }],
       options: {},
     },
     framework: "react",
@@ -120,6 +124,9 @@ export default defineConfig(async (merge, { command, mode }) => {
         },
       },
     },
+    alipay: {
+      payment: true
+    }
   };
   if (process.env.NODE_ENV === "development") {
     // 本地开发构建配置（不混淆压缩）

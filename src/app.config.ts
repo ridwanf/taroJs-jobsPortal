@@ -1,5 +1,6 @@
 export default defineAppConfig({
   pages: [
+    'pages/splash/splash',
     "pages/index/index",
     "pages/job-detail/job-detail",
     "pages/proposal/proposal",
