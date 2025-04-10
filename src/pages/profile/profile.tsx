@@ -12,7 +12,7 @@ export default function Profile() {
     id: 1,
     name: 'John Doe',
     skills: ['React', 'TypeScript', 'Tailwind CSS', 'Node.js', 'REST APIs'],
-    cvUrl: '/path/to/cv.pdf',
+    cvUrl: '/assets/cv.pdf',
     credits: credit,
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=John',
   };
@@ -25,6 +25,51 @@ export default function Profile() {
       success: function (res) {
         console.log('Selected file:', res.tempFiles[0]);
         // Implement file upload logic here
+      }
+    });
+  };
+
+  const handleViewCV = () => {
+    if (!user.cvUrl) {
+      Taro.showToast({
+        title: 'No CV found',
+        icon: 'error'
+      });
+      return;
+    }
+
+    Taro.showLoading({ title: 'Opening CV...' });
+
+    // Download and open PDF file
+    Taro.downloadFile({
+      url: user.cvUrl,
+      success: function (res) {
+        const tempFilePath = res.tempFilePath;
+        Taro.openDocument({
+          filePath: tempFilePath,
+          fileType: 'pdf',
+          success: function () {
+            console.log('File opened successfully');
+          },
+          fail: function (error) {
+            console.error('Failed to open document:', error);
+            Taro.showToast({
+              title: 'Failed to open CV',
+              icon: 'error'
+            });
+          },
+          complete: function () {
+            Taro.hideLoading();
+          }
+        });
+      },
+      fail: function (error) {
+        console.error('Failed to download file:', error);
+        Taro.showToast({
+          title: 'Failed to download CV',
+          icon: 'error'
+        });
+        Taro.hideLoading();
       }
     });
   };
@@ -109,10 +154,10 @@ export default function Profile() {
                   <View className="w-8 h-8 bg-blue-50 rounded-full flex items-center justify-center">
                     <Text className="text-white">📄</Text>
                   </View>
-                  <Text className="ml-2 text-gray-600 title-30">CV.pdf</Text>
+                  <Text className="ml-2 text-gray-600 title-30">{user.cvUrl}</Text>
                 </View>
                 <Btn
-                  onClick={() => console.log('View CV')}
+                  onClick={handleViewCV}
                   title="View"
                   type="primary"
                   size="small"
